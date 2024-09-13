@@ -12,7 +12,7 @@ paperBag = ['bm7', 'e', 'c', 'g', 'b7', 'f', 'em', 'a', 'cmaj7',
 toxic = ['cm', 'eb', 'g', 'cdim', 'eb7', 'd7', 'db7', 'ab', 'gmaj7',
          'g7'];
 bulletproof = ['d#m', 'g#', 'b', 'f#', 'g#m', 'c#'];
-song_11 = [];
+blankSong = [];
 
 var songs = [];
 var labels = [];

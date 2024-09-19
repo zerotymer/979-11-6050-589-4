@@ -1,3 +1,7 @@
+const EASY = 'easy';
+const MEDIUM = 'medium';
+const HARD = 'hard';
+
 // songs
 imagine = ['c', 'cmaj7', 'f', 'am', 'dm', 'g', 'e7'];
 someWhereOverTheRainbow = ['c', 'em', 'f', 'g', 'am'];
@@ -73,15 +77,15 @@ function setProbabilityOfChordsInLabels(){
   });
 }
 
-train(imagine, 'easy');
-train(someWhereOverTheRainbow, 'easy');
-train(tooManyCooks, 'easy');
-train(iWillFollowYouIntoTheDark, 'medium');
-train(babyOneMoreTime, 'medium');
-train(creep, 'medium');
-train(paperBag, 'hard');
-train(toxic, 'hard');
-train(bulletproof, 'hard');
+train(imagine, EASY);
+train(someWhereOverTheRainbow, EASY);
+train(tooManyCooks, EASY);
+train(iWillFollowYouIntoTheDark, MEDIUM);
+train(babyOneMoreTime, MEDIUM);
+train(creep, MEDIUM);
+train(paperBag, HARD);
+train(toxic, HARD);
+train(bulletproof, HARD);
 
 setLabelProbabilities();
 setChordCountsInLabels();

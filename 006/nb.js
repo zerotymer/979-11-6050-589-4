@@ -87,8 +87,6 @@ setLabelProbabilities();
 setChordCountsInLabels();
 setProbabilityOfChordsInLabels();
 
-
-
 function classify(chords){
   var total = labelProbabilities;
   console.log(total);

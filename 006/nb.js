@@ -60,7 +60,7 @@ function setChordCountsInLabels(){
 
     song[1].forEach(function(chord){
       if(chordCountsInLabels[song[0]][chord] > 0){
-        chordCountsInLabels[song[0]][chord] = chordCountsInLabels[song[0]][chord] + 1;
+        chordCountsInLabels[song[0]][chord] += 1;
       } else {
         chordCountsInLabels[song[0]][chord] = 1;
       }
@@ -72,7 +72,7 @@ function setProbabilityOfChordsInLabels(){
   probabilityOfChordsInLabels = chordCountsInLabels;
   Object.keys(probabilityOfChordsInLabels).forEach(function(i){
     Object.keys(probabilityOfChordsInLabels[i]).forEach(function(j){
-      probabilityOfChordsInLabels[i][j] = probabilityOfChordsInLabels[i][j] * 1.0 / songs.length;
+      probabilityOfChordsInLabels[i][j] /= songs.length;
     });
   });
 }

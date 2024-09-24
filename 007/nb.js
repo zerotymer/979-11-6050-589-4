@@ -1,12 +1,10 @@
 var classifier = {
-  setup: function() {
-    classifier.songs = [];
-    classifier.allChords = new Set();
-    classifier.labelCounts = new Map();
-    classifier.labelProbabilities = new Map();
-    classifier.chordCountsInLabels = new Map();
-    classifier.probabilityOfChordsInLabels = new Map();
-  }
+  songs: [],
+  allChords: new Set(),
+  labelCounts: new Map(),
+  labelProbabilities: new Map(),
+  chordCountsInLabels: new Map(),
+  probabilityOfChordsInLabels: new Map()
 };
 
 function fileName(){
@@ -77,7 +75,6 @@ function setProbabilityOfChordsInLabels(){
 };
 
 function trainAll() {
-  classifier.setup();
   setDifficulties();
   setSongs();
   train(imagine, easy);

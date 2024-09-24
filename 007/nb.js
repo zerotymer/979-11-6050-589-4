@@ -2,31 +2,37 @@ function fileName(){
   var theError = new Error("here I am");
   return theError.stack.match(/(\w+\.js)/)[1];
 };
+
 function welcomeMessage() {
   return `Welcome to ${fileName()}!`;
 };
-var easy = 'easy';
-var medium = 'medium';
-var hard = 'hard';
 
-imagine = ['c', 'cmaj7', 'f', 'am', 'dm', 'g', 'e7'];
-somewhereOverTheRainbow = ['c', 'em', 'f', 'g', 'am'];
-tooManyCooks = ['c', 'g', 'f'];
-iWillFollowYouIntoTheDark = ['f', 'dm', 'bb', 'c', 'a', 'bbm'];
-babyOneMoreTime = ['cm', 'g', 'bb', 'eb', 'fm', 'ab'];
-creep = ['g', 'gsus4', 'b', 'bsus4', 'c', 'cmsus4', 'cm6'];
-paperBag = ['bm7', 'e', 'c', 'g', 'b7', 'f', 'em', 'a', 'cmaj7',
-            'em7', 'a7', 'f7', 'b'];
-toxic = ['cm', 'eb', 'g', 'cdim', 'eb7', 'd7', 'db7', 'ab', 'gmaj7',
-         'g7'];
-bulletproof = ['d#m', 'g#', 'b', 'f#', 'g#m', 'c#'];
+function setDifficulties() {
+  easy = 'easy';
+  medium = 'medium';
+  hard = 'hard'; 
+};
 
-var songs = [];
-var allChords = new Set();
-var labelCounts = new Map();
-var labelProbabilities = new Map();
-var chordCountsInLabels = new Map();
-var probabilityOfChordsInLabels = new Map();
+function setSongs() {
+  imagine = ['c', 'cmaj7', 'f', 'am', 'dm', 'g', 'e7'];
+  somewhereOverTheRainbow = ['c', 'em', 'f', 'g', 'am'];
+  tooManyCooks = ['c', 'g', 'f'];
+  iWillFollowYouIntoTheDark = ['f', 'dm', 'bb', 'c', 'a', 'bbm'];
+  babyOneMoreTime = ['cm', 'g', 'bb', 'eb', 'fm', 'ab'];
+  creep = ['g', 'gsus4', 'b', 'bsus4', 'c', 'cmsus4', 'cm6'];
+  paperBag = ['bm7', 'e', 'c', 'g', 'b7', 'f', 'em', 'a', 'cmaj7', 'em7', 'a7', 'f7', 'b'];
+  toxic = ['cm', 'eb', 'g', 'cdim', 'eb7', 'd7', 'db7', 'ab', 'gmaj7', 'g7'];
+  bulletproof = ['d#m', 'g#', 'b', 'f#', 'g#m', 'c#'];
+};
+
+function setup() {
+  songs = [];
+  allChords = new Set();
+  labelCounts = new Map();
+  labelProbabilities = new Map();
+  chordCountsInLabels = new Map();
+  probabilityOfChordsInLabels = new Map();
+};
 
 function train(chords, label){
   songs.push({label, chords});
@@ -39,7 +45,7 @@ function train(chords, label){
 };
 
 function setLabelProbabilities(){
-  labelCounts.forEach((_count, label) => labelProbabilities.set(label, labelCounts.get(label) / songs.length));
+  labelCounts.forEach(function(_count, label) {labelProbabilities.set(label, labelCounts.get(label) / songs.length); });
 };
 
 function setChordCountsInLabels(){
@@ -55,35 +61,41 @@ function setChordCountsInLabels(){
       }
     });
   });
-}
+};
 
 function setProbabilityOfChordsInLabels(){
   probabilityOfChordsInLabels = chordCountsInLabels;
   probabilityOfChordsInLabels.forEach(function(_chords, difficulty){
-    Object.keys(probabilityOfChordsInLabels.get(difficulty)).forEach(
-function(chord){
+    Object.keys(probabilityOfChordsInLabels.get(difficulty)).forEach(function(chord){
       probabilityOfChordsInLabels.get(difficulty)[chord] /= songs.length;
     });
   });
-}
+};
 
-train(imagine, easy);
-train(somewhereOverTheRainbow, easy);
-train(tooManyCooks, easy);
-train(iWillFollowYouIntoTheDark, medium);
-train(babyOneMoreTime, medium);
-train(creep, medium);
-train(paperBag, hard);
-train(toxic, hard);
-train(bulletproof, hard);
+function trainAll() {
+  setDifficulties();
+  setup();
+  setSongs();
+  train(imagine, easy);
+  train(somewhereOverTheRainbow, easy);
+  train(tooManyCooks, easy);
+  train(iWillFollowYouIntoTheDark, medium);
+  train(babyOneMoreTime, medium);
+  train(creep, medium);
+  train(paperBag, hard);
+  train(toxic, hard);
+  train(bulletproof, hard);
+  setLabelsAndProbabilities();
+};
 
-setLabelProbabilities();
-setChordCountsInLabels();
-setProbabilityOfChordsInLabels();
+function setLabelsAndProbabilities() {
+  setLabelProbabilities();
+  setChordCountsInLabels();
+  setProbabilityOfChordsInLabels();
+};
 
 function classify(chords){
   var smoothing = 1.01;
-  
   var classified = new Map();
   labelProbabilities.forEach((_probabilities, difficulty) => {
     var first = labelProbabilities.get(difficulty) + smoothing;
@@ -99,20 +111,21 @@ function classify(chords){
   return classified;
 };
 
-classify(['d', 'g', 'e', 'dm']);
-classify(['f#m7', 'a', 'dadd9', 'dmaj7', 'bm', 'bm7', 'd', 'f#m']);
-
 var wish = require('wish');
 describe('the file', function() {
-  it('sets welcome message', function() {
-    wish(welcomeMessage() === 'Welcome to nb.js!');
-  });
+  trainAll();
+
   it('classifies', function() {
     var classified = classify(['f#m7', 'a', 'dadd9', 'dmaj7', 'bm', 'bm7', 'd', 'f#m']);
     wish(classified.get(easy) === 1.3433333333333333);
     wish(classified.get(medium) === 1.5060259259259259);
     wish(classified.get(hard) === 1.6884223991769547);
   });
+
+  it('sets welcome message', function() {
+    wish(welcomeMessage() === 'Welcome to nb.js!');
+  });
+
   it('label probabilities', function() {
     wish(labelProbabilities.get(easy) === 0.3333333333333333);
     wish(labelProbabilities.get(medium) === 0.3333333333333333);

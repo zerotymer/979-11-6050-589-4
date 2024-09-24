@@ -2,7 +2,9 @@ function fileName(){
   var theError = new Error("here I am");
   return theError.stack.match(/(\w+\.js)/)[1];
 };
-console.log(`Welcome to ${fileName()}!`);
+function welcomeMessage() {
+  return `Welcome to ${fileName()}!`;
+};
 var easy = 'easy';
 var medium = 'medium';
 var hard = 'hard';
@@ -81,7 +83,7 @@ setProbabilityOfChordsInLabels();
 
 function classify(chords){
   var smoothing = 1.01;
-  console.log(labelProbabilities);
+  
   var classified = new Map();
   labelProbabilities.forEach((_probabilities, difficulty) => {
     var first = labelProbabilities.get(difficulty) + smoothing;
@@ -102,10 +104,18 @@ classify(['f#m7', 'a', 'dadd9', 'dmaj7', 'bm', 'bm7', 'd', 'f#m']);
 
 var wish = require('wish');
 describe('the file', function() {
+  it('sets welcome message', function() {
+    wish(welcomeMessage() === 'Welcome to nb.js!');
+  });
   it('classifies', function() {
     var classified = classify(['f#m7', 'a', 'dadd9', 'dmaj7', 'bm', 'bm7', 'd', 'f#m']);
     wish(classified.get(easy) === 1.3433333333333333);
     wish(classified.get(medium) === 1.5060259259259259);
     wish(classified.get(hard) === 1.6884223991769547);
-  })
+  });
+  it('label probabilities', function() {
+    wish(labelProbabilities.get(easy) === 0.3333333333333333);
+    wish(labelProbabilities.get(medium) === 0.3333333333333333);
+    wish(labelProbabilities.get(hard) === 0.3333333333333333);
+  });
 });

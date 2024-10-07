@@ -20,21 +20,17 @@
       "name": "Mocha Tests",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "args": [
-        "--require",
-        "esm",
-        "--require",
-        "${workspaceFolder}/your-test-folder/your-setup.js",
-        "--reporter",
-        "dot",
-        "--slow",
-        "5000",
-        "--colors",
-        "${workspaceFolder}/your-test-folder/**/*.spec.js",
-
-      ],
-      "internalConsoleOptions": "openOnSessionStart",
-      "skipFiles": [
-        "<node_internals>/**"
+        "${file}"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Mocha watcher",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "args": [
+        "-w",
+        "${file}"
       ]
     }
   ]
